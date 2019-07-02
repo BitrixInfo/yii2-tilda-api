@@ -84,20 +84,16 @@ TildaRender::loadPage
 ---
 This static method returns the array of data form the local copy of the page. The common use would be like this:
 
-Add this line to the `use` section of your controller
-```php
-use daccess1\tilda\TildaRender;
-```
 In your action use static method to load page html and assets, then pass them to the render function
 ```php
-$page = TildaRender::loadPage(/*YOUR PAGE ID*/);
+$page = Yii::$app->tilda->loadPage(/*YOUR PAGE ID*/);
 ...
 return $this->render(/*YOUR VIEW*/, [
     ...
     'page' => $page
 ]);
 ```
-Finally in your view include page assets like this
+Then in your view register page assets like this
 ```php
 foreach ($page['styles'] as $style) {
     $this->registerCssFile($style);

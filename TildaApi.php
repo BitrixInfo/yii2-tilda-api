@@ -145,4 +145,8 @@ class TildaApi extends Component
             \Yii::warning($request->data['message'], 'yii2-tilda-api');
         }
     }
+
+    public function loadPage($pageID) {
+        return TildaRender::loadPage($pageID);
+    }
 }
