@@ -117,7 +117,7 @@ You can now render page html code like this
 
 Notes
 =====
-You should cousider that current Tilda core css settings conflict with Bootstrap (provided with Yii2 by default). To avoid conflicts, you could either don't `bootstrap.css` and Tilda at the same page, or fix `box-sizing` property of elements in your own stylesheet.
+You should cousider that current Tilda core css settings conflict with Bootstrap (provided with Yii2 by default). To avoid conflicts, you could either don't use `bootstrap.css` and Tilda at the same page, or fix `box-sizing` property of elements in your own stylesheet.
 
 License
 =======
