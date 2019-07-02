@@ -50,7 +50,7 @@ class TildaExportPage
         $page->setAttributes([
             'page_id' => $this->pageID,
             'project_id' => $this->projectID,
-            'published' => true,
+            'published' => 1,
             'title' => $this->title,
             'html' => $this->html,
             'alias' => $this->alias,

@@ -24,7 +24,7 @@ to the require section of your `composer.json` file.
 Apply migrations
 
 ```
-php yii migrate --migrationPath=../vendor/globus/yii2-tilda-api/migrations
+php yii migrate --migrationPath=@vendor/globus/yii2-tilda-api/migrations
 ```
 
 Usage
