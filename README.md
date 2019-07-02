@@ -5,7 +5,7 @@ Tilda platform api extension for Yii2
 This is a fork of [nariman924/yii2-tilda-api](https://github.com/nariman924/yii2-tilda-api) project, which seems to be abandoned for a couple of years.
 
 Installation
-------------
+============
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
@@ -52,28 +52,40 @@ php yii migrate --migrationPath=@vendor/daccess1/yii2-tilda-api/migrations
 
 
 Usage
-=======
+=====
+After registering the component and applying required migrations, use it anywhere in your code like this:
 
 getPage
----
+-------
 Saves tilda page to the local database
 ```php
 Yii::$app->tilda->getPage($pageID)
 ```
+The common use with Gii-generated CRUD could be like the following:
+
+Update the `actionUpdate` function of your Controller (assuming that tilda_page_id is your model field containing integer page ID form Tilda) like this
+```php
+if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //insert this line
+    Yii::$app->tilda->getPage($model->tilda_page_id);
+    
+    return $this->redirect(['view', 'id' => $model->id]);
+}
+```
 
 getPages
----
+--------
+Saves all pages from selected project to the local database. If no `$projectID`  is provided the `defaultProjectID` setting is used instead.
 ```php
 Yii::$app->tilda->getPages($projectID)
 ```
-Saves all pages from selected project to the local database. If no `$projectID`  is provided the `defaultProjectID` setting is used instead.
 
 listPages
----
+---------
+Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
 ```php
 Yii::$app->tilda->getPages($projectID)
 ```
-Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
 
 loadPage
 ---
@@ -103,8 +115,9 @@ You can now render page html code like this
 <?= $page['html'] ?>
 ```
 
-
-You must know that current Tilda core css settings conflict with Bootstrap (provided with Yii2 by default). You should either avoid using `bootstrap.css` and Tilda at the same page or fix `box-sizing` property of elements in your own stylesheet.
+Notes
+=====
+You should cousider that current Tilda core css settings conflict with Bootstrap (provided with Yii2 by default). To avoid conflicts, you could either don't `bootstrap.css` and Tilda at the same page, or fix `box-sizing` property of elements in your own stylesheet.
 
 License
 =======
