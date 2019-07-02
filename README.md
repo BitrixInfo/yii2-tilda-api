@@ -23,15 +23,6 @@ or add
 to the require section of your `composer.json` file.
 
 
-Apply migrations
-
-```
-php yii migrate --migrationPath=@vendor/daccess1/yii2-tilda-api/migrations
-```
-
-Usage
------
-
 Once the extension is installed, include this in components section of your `common/config/main-local.php` file:
 
 ```php
@@ -52,6 +43,13 @@ Once the extension is installed, include this in components section of your `com
          ],
      ],
 ```
+
+Apply required migrations
+
+```
+php yii migrate --migrationPath=@vendor/daccess1/yii2-tilda-api/migrations
+```
+
 After this, simply use it in your code like this:
 
 ```php
