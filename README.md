@@ -42,7 +42,7 @@ Once the extension is installed, include this in components section of your `com
              'publicKey' => '**********',
              'secretKey' => '**********',
              // Change URL if needed
-             'assetsUrl' => 'https://'.$_SERVER['HTTP_HOST'].'.xsph.ru/tilda',
+             'assetsUrl' => 'https://'.$_SERVER['HTTP_HOST'].'/tilda',
              // Change 'public_html' to the frontend web directory if needed
              // (default Yii2 directory is 'frontend/web')
             'assetsPath' => dirname(dirname(__DIR__)).'/public_html/tilda',
