@@ -20,17 +20,18 @@ class TildaRender
     }
 
     public static function loadPage($pageID) {
-        $page['html'] = TildaPage::findOne(['id' => $pageID])->html;
+        $page = TildaPage::findOne(['id' => $pageID]);
+        $result['html'] = $page->html;
 
         $styles = TildaStyle::find()->where(['tilda_page_id' => $page->id])->all();
         foreach ($styles as $style) {
-            $page['styles'][] = $style->path;
+            $result['styles'][] = $style->path;
         }
         $scripts = TildaScript::find()->where(['tilda_page_id' => $page->id])->all();
         foreach ($scripts as $script) {
-            $page['scripts'][] = $script->path;
+            $result['scripts'][] = $script->path;
         }
 
-        return $page;
+        return $result;
     }
 }
