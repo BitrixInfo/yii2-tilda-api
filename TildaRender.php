@@ -15,10 +15,6 @@ use daccess1\tilda\models\TildaStyle;
 
 class TildaRender
 {
-    public static function pageHtml($pageID) {
-        $page = TildaPage::findOne(['id' => $pageID]);
-    }
-
     /**
      * @param integer $pageID
      * @return mixed

@@ -82,6 +82,41 @@ Yii::$app->tilda->getPages($projectID)
 ```
 Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
 
+loadPage
+---
+This function returns the array of data for the page. The common use would be like this:
+
+Add this line to the `use` section of your controller
+```php
+use daccess1\tilda\TildaRender;
+```
+In your action use static method to load page html and assets, then pass them to the render function
+```php
+$page = TildaRender::loadPage(/*YOUR PAGE ID*/);
+...
+return $this->render(/*YOUR VIEW*/, [
+    ...
+    'page' => $page
+]);
+```
+Finally in your view include page assets like this
+```php
+foreach ($page['styles'] as $style) {
+    $this->registerCssFile($style->path);
+}
+foreach ($page['scripts'] as $script) {
+    $this->registerJsFile($script->path,['depends' => [yii\web\JqueryAsset::className()]]);
+}
+```
+
+You can now render page html code like this
+```php
+<?= $page['html'] ?>
+```
+
+
+You must know that current Tilda core css settings conflict with Bootstrap (provided with Yii2 by default). You should either avoid using `bootstrap.css` and Tilda at the same page or fix `box-sizing` property of elements in your own stylesheet.
+
 License
 =======
 This software is licensed under MIT license. For more information see [LICENSE](https://github.com/daccess1/yii2-tilda-api/blob/master/LICENSE).
