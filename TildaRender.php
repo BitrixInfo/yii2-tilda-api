@@ -19,8 +19,15 @@ class TildaRender
         $page = TildaPage::findOne(['id' => $pageID]);
     }
 
+    /**
+     * @param integer $pageID
+     * @return mixed
+     */
     public static function loadPage($pageID) {
         $page = TildaPage::findOne(['id' => $pageID]);
+        if (!$page) {
+            throw new \yii\web\NotFoundHttpException("Page is not cached");
+        }
         $result['html'] = $page->html;
 
         $styles = TildaStyle::find()->where(['tilda_page_id' => $page->id])->all();
