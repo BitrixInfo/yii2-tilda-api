@@ -50,21 +50,16 @@ Apply required migrations
 php yii migrate --migrationPath=@vendor/daccess1/yii2-tilda-api/migrations
 ```
 
-After this, simply use it in your code like this:
 
-```php
-Yii::$app->tilda->getPage($pageID)
-```
-
-Methods
+Usage
 =======
 
 getPage
 ---
+Saves tilda page to the local database
 ```php
 Yii::$app->tilda->getPage($pageID)
 ```
-Saves tilda page to local database
 
 getPages
 ---
@@ -80,11 +75,11 @@ Yii::$app->tilda->getPages($projectID)
 ```
 Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
 
-TildaRender::loadPage
+loadPage
 ---
-This static method returns the array of data form the local copy of the page. The common use would be like this:
+Returns the array of data form the local copy of the page. The common use would be like this:
 
-In your action use static method to load page html and assets, then pass them to the render function
+In your action load page data, then pass it to your view
 ```php
 $page = Yii::$app->tilda->loadPage(/*YOUR PAGE ID*/);
 ...
