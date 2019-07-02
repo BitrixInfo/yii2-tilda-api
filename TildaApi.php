@@ -63,8 +63,14 @@ class TildaApi extends Component
             $this->defaultProjectID = 0;
     }
 
-    public function getPages($projectID)
+    public function getPages($projectID = 0)
     {
+        if (!$projectID) {
+            if (!$this->defaultProjectID)
+                throw new InvalidConfigException("projectID can't be empty.");
+
+            $projectID = $this->defaultProjectID;
+        }
         $request = $this->client->createRequest()
             ->setMethod('get')
             ->setUrl(self::GET_PAGE_LIST)
