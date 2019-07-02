@@ -18,7 +18,7 @@ composer require daccess1/yii2-tilda-api:dev-master
 or add
 
 ```
-"daccess1/yii2-tilda-api": "*"
+"daccess1/yii2-tilda-api": "dev-master"
 ```
 to the require section of your `composer.json` file.
 
@@ -41,13 +41,14 @@ Once the extension is installed, include this in components section of your `com
              'class' => 'daccess1\tilda\TildaApi',
              'publicKey' => '**********',
              'secretKey' => '**********',
-             // Change URL if needed
-             'assetsUrl' => 'https://'.$_SERVER['HTTP_HOST'].'/tilda',
+             // Change URL if needed. Don't forget to set protocol
+             // to https:// when moving to production.
+             'assetsUrl' => 'http://'.$_SERVER['HTTP_HOST'].'/tilda',
              // Change 'public_html' to the frontend web directory if needed
              // (default Yii2 directory is 'frontend/web')
             'assetsPath' => dirname(dirname(__DIR__)).'/public_html/tilda',
-             //Optional settings
-             //'defaultProjectID' => '**********'
+             //Optional default project ID (integer)
+             //'defaultProjectID' => *****
          ],
      ],
 ```
