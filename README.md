@@ -2,6 +2,8 @@ Yii2 Tilda Api
 ==============
 Tilda platform api extension for Yii2
 
+This is a fork of [nariman924/yii2-tilda-api](https://github.com/nariman924/yii2-tilda-api) project, which seems to be abandoned for a couple of years.
+
 Installation
 ------------
 
@@ -10,13 +12,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-composer require globus/yii2-tilda-api:dev-master
+composer require daccess1/yii2-tilda-api:dev-master
 ```
 
 or add
 
 ```
-"globus/yii2-tilda-api": "*"
+"daccess1/yii2-tilda-api": "*"
 ```
 to the require section of your `composer.json` file.
 
@@ -24,13 +26,13 @@ to the require section of your `composer.json` file.
 Apply migrations
 
 ```
-php yii migrate --migrationPath=@vendor/globus/yii2-tilda-api/migrations
+php yii migrate --migrationPath=@vendor/daccess1/yii2-tilda-api/migrations
 ```
 
 Usage
 -----
 
-Once the extension is installed, include this in common/config/main-local.php file:
+Once the extension is installed, include this in components section of your `common/config/main-local.php` file:
 
 ```php
     'components' => [
@@ -58,23 +60,24 @@ Yii::$app->tilda->getPage($pageID)
 Methods
 =======
 
-getPage
--------
+###getPage
 ```php
 Yii::$app->tilda->getPage($pageID)
 ```
 Saves tilda page to local database
 
-getPages
---------
+###getPages
 ```php
 Yii::$app->tilda->getPages($projectID)
 ```
-Saves all pages from selected project to the local database. If no $projectID  is provided the defaultProjectID setting is used instead.
+Saves all pages from selected project to the local database. If no `$projectID`  is provided the `defaultProjectID` setting is used instead.
 
-listPages
---------
+###listPages
 ```php
 Yii::$app->tilda->getPages($projectID)
 ```
-Returns list of pages in project as array ['id' => 'title']. If no $projectID is provided the defaultProjectID setting is used instead.
+Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
+
+License
+=======
+This software is licensed under MIT license. For more information see [LICENSE](https://github.com/daccess1/yii2-tilda-api/blob/master/LICENSE).
