@@ -60,19 +60,22 @@ Yii::$app->tilda->getPage($pageID)
 Methods
 =======
 
-###getPage
+getPage
+---
 ```php
 Yii::$app->tilda->getPage($pageID)
 ```
 Saves tilda page to local database
 
-###getPages
+getPages
+---
 ```php
 Yii::$app->tilda->getPages($projectID)
 ```
 Saves all pages from selected project to the local database. If no `$projectID`  is provided the `defaultProjectID` setting is used instead.
 
-###listPages
+listPages
+---
 ```php
 Yii::$app->tilda->getPages($projectID)
 ```
