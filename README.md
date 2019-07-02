@@ -82,9 +82,9 @@ Yii::$app->tilda->getPages($projectID)
 ```
 Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
 
-loadPage
+TildaRender::loadPage
 ---
-This function returns the array of data for the page. The common use would be like this:
+This static method returns the array of data form the local copy of the page. The common use would be like this:
 
 Add this line to the `use` section of your controller
 ```php
@@ -102,10 +102,10 @@ return $this->render(/*YOUR VIEW*/, [
 Finally in your view include page assets like this
 ```php
 foreach ($page['styles'] as $style) {
-    $this->registerCssFile($style->path);
+    $this->registerCssFile($style);
 }
 foreach ($page['scripts'] as $script) {
-    $this->registerJsFile($script->path,['depends' => [yii\web\JqueryAsset::className()]]);
+    $this->registerJsFile($script,['depends' => [yii\web\JqueryAsset::className()]]);
 }
 ```
 
