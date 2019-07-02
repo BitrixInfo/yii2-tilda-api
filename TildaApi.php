@@ -33,6 +33,8 @@ class TildaApi extends Component
     public $pageObj;
     /** @var  Client */
     public $client;
+    /** @var  integer */
+    public $defaultProjectID;
 
     public function init()
     {
@@ -57,6 +59,8 @@ class TildaApi extends Component
         } elseif($this->assetsUrl[strlen($this->assetsUrl)-1] != '/') {
             $this->assetsUrl .= '/';
         }
+        if (!$this->defaultProjectID)
+            $this->defaultProjectID = 0;
     }
 
     public function getPages($projectID)
@@ -77,6 +81,39 @@ class TildaApi extends Component
                 foreach ($pageIDs as $pageID) {
                     $this->getPage($pageID);
                 }
+            }
+        } elseif (isset($request->data['status']) && $request->data['status'] == self::API_STATUS_ERROR) {
+            \Yii::warning($request->data['message'], 'yii2-tilda-api');
+        }
+    }
+
+    /**
+     * Returns list of pages in project as array ['id' => 'title']
+     * If no project ID is provided uses default setting
+     * @param int $projectID
+     * @return array
+     */
+    public function listPages($projectID = 0)
+    {
+        if (!$projectID) {
+            if (!$this->defaultProjectID)
+                throw new InvalidConfigException("projectID can't be empty.");
+
+            $projectID = $this->defaultProjectID;
+        }
+        $request = $this->client->createRequest()
+            ->setMethod('get')
+            ->setUrl(self::GET_PAGE_LIST)
+            ->setData([
+                'publickey' => $this->publicKey,
+                'secretkey' => $this->secretKey,
+                'projectid' => $projectID,
+            ])->send();
+
+        if ($request->isOk) {
+            if (isset($request->data['status']) && $request->data['status'] == self::API_STATUS_SUCCESS) {
+                $pageIDs = array_column($request->data['result'],'title', 'id');
+                return $pageIDs;
             }
         } elseif (isset($request->data['status']) && $request->data['status'] == self::API_STATUS_ERROR) {
             \Yii::warning($request->data['message'], 'yii2-tilda-api');
