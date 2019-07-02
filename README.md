@@ -12,13 +12,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-composer require daccess1/yii2-tilda-api:dev-master
+composer require daccess1/yii2-tilda-api
 ```
 
 or add
 
 ```
-"daccess1/yii2-tilda-api": "dev-master"
+"daccess1/yii2-tilda-api": "^1.0"
 ```
 to the require section of your `composer.json` file.
 
