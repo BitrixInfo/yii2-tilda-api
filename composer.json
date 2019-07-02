@@ -1,7 +1,7 @@
 {
-    "name": "globus/yii2-tilda-api",
+    "name": "daccess1/yii2-tilda-api",
     "description": "Tilda platform api extension for Yii2",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","tilda","api","platform"],
     "license": "MIT",
@@ -9,6 +9,10 @@
         {
             "name": "nariman",
             "email": "n.ablyakimov@globus-ltd.com"
+        },
+        {
+            "name": "daccess1",
+            "email": "b.kruchinkin@gmail.com"
         }
     ],
     "require": {
@@ -17,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "globus\\tilda\\": ""
+            "daccess1\\tilda\\": ""
         }
     }
 }
