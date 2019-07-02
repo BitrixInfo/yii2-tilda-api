@@ -1,6 +1,6 @@
 <?php
 
-namespace globus\tilda;
+namespace daccess1\tilda;
 
 use yii\base\Component;
 use yii\base\InvalidConfigException;

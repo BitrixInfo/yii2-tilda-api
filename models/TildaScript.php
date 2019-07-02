@@ -1,6 +1,6 @@
 <?php
 
-namespace globus\tilda\models;
+namespace daccess1\tilda\models;
 
 use Yii;
 

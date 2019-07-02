@@ -1,11 +1,11 @@
 <?php
 
-namespace globus\tilda;
+namespace daccess1\tilda;
 
-use globus\tilda\models\TildaImage;
-use globus\tilda\models\TildaPage;
-use globus\tilda\models\TildaScript;
-use globus\tilda\models\TildaStyle;
+use daccess1\tilda\models\TildaImage;
+use daccess1\tilda\models\TildaPage;
+use daccess1\tilda\models\TildaScript;
+use daccess1\tilda\models\TildaStyle;
 
 class TildaExportPage
 {
