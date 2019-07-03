@@ -128,7 +128,7 @@ class TildaExportPage
         $basePath = $this->preparePath(self::JS_PATH);
 
         foreach ($this->js as $item) {
-            if ( strpos($item['to'],"jquery-1.10.2.min.js") )
+            if ($item['to'] == 'jquery-1.10.2.min.js')
                 continue;
             $path = $basePath . $item['to'];
 
