@@ -20,7 +20,7 @@ class TildaRender
      * @return mixed
      */
     public static function loadPage($pageID) {
-        $page = TildaPage::findOne(['id' => $pageID]);
+        $page = TildaPage::findOne(['page_id' => $pageID]);
         if (!$page) {
             throw new \yii\web\NotFoundHttpException("Page is not cached");
         }
