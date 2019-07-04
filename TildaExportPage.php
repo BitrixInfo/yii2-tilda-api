@@ -22,6 +22,7 @@ class TildaExportPage
     private $img;
     private $css;
     private $js;
+    private $published_at;
 
     public function __construct(Array $response, $assetsPath, $assetsUrl)
     {
@@ -37,6 +38,8 @@ class TildaExportPage
         $this->css = isset($response['css']) ? $response['css'] : [];
         $this->js = isset($response['js']) ? $response['js'] : [];
 
+        $this->published_at = isset($response['published']) ? $response['published'] : null;
+
         $this->savePage();
     }
 
@@ -47,6 +50,9 @@ class TildaExportPage
             'project_id' => $this->projectID
         ]) ? : new TildaPage();
 
+        if ($page->published_at >= $this->published_at)
+            return true;
+
         $page->setAttributes([
             'page_id' => $this->pageID,
             'project_id' => $this->projectID,
@@ -54,6 +60,7 @@ class TildaExportPage
             'title' => $this->title,
             'html' => $this->html,
             'alias' => $this->alias,
+            'published_at' => $this->published_at,
         ]);
 
         if ($page->save()) {

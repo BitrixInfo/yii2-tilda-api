@@ -19,6 +19,7 @@ class m170412_115232_create_tilda_tables extends Migration
             'published' => $this->boolean(),
             'title' => $this->string(),
             'html' => $this->getDb()->getSchema()->createColumnSchemaBuilder('longtext'),
+            'published_at' => $this->integer(),
         ], $tableOptions);
 
         $this->createTable('tilda_styles', [

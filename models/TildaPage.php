@@ -14,6 +14,7 @@ use Yii;
  * @property string $title
  * @property string $alias
  * @property string $html
+ * @property integer $published_at
  *
  * @property TildaImage[] $tildaImages
  * @property TildaScript[] $tildaScripts
@@ -35,7 +36,7 @@ class TildaPage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['page_id', 'project_id', 'published'], 'integer'],
+            [['page_id', 'project_id', 'published', 'published_at'], 'integer'],
             [['html'], 'string'],
             [['title', 'alias'], 'string', 'max' => 255],
         ];
@@ -51,6 +52,7 @@ class TildaPage extends \yii\db\ActiveRecord
             'page_id' => Yii::t('app', 'Page ID'),
             'project_id' => Yii::t('app', 'Project ID'),
             'published' => Yii::t('app', 'Published'),
+            'published_at' => Yii::t('app', 'Published at'),
             'title' => Yii::t('app', 'Title'),
             'alias' => Yii::t('app', 'Alias'),
             'html' => Yii::t('app', 'Html'),
