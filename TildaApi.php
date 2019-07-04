@@ -149,4 +149,8 @@ class TildaApi extends Component
     public function loadPage($pageID) {
         return TildaRender::loadPage($pageID);
     }
+
+    public function verifyPublicKey($publicKey) {
+        return ($this->publicKey == $publicKey) ? true : false;
+    }
 }
