@@ -122,23 +122,29 @@ Tilda has an option to notify your app about any pages published in your project
 public function actionWebhook()
     {
         $get = \Yii::$app->request->get();
-        \Yii::debug("GET:".print_r($get,1));
 
+        // Check request public key
         if (!\Yii::$app->tilda->verifyPublicKey($get['publickey']))
             throw new \yii\web\ForbiddenHttpException("PublicKey dosen't match");
-
+        
         if (!isset($get['save'])) {
+            // If this is actual Tilda webhook request,
+            // create cURL request client 
+            // Set 'baseUrl' to your current action Url
             $client = new Client([
                 'transport' => 'yii\httpclient\CurlTransport',
-                'baseUrl' => "http://tyii.ru.xsph.ru/index.php?r=tilda/webhook&save=1"
+                'baseUrl' => 'http://YOUR_DOMAIN/index.php?r=tilda/webhook'
             ]);
             try {
-                $save = $client->createRequest()
+                $client->createRequest()
                     ->setMethod('get')
-                    ->setData(['page' => $get['pageid'], 'publickey' => $get['publickey']])
+                    ->setData(['save' => 1, 'page' => $get['pageid'], 'publickey' => $get['publickey']])
                     ->setOptions([
-                        CURLOPT_CONNECTTIMEOUT => 1, // connection timeout
-                        CURLOPT_TIMEOUT => 1, // data receiving timeout
+                        // Setting timeout and data return transfer
+                        // options of request to prevent waiting until
+                        // page download completes
+                        CURLOPT_CONNECTTIMEOUT => 1,
+                        CURLOPT_TIMEOUT => 1,
                         CURLOPT_RETURNTRANSFER => false,
                         CURLOPT_FORBID_REUSE => true,
                         CURLOPT_DNS_CACHE_TIMEOUT => 10,
@@ -146,10 +152,13 @@ public function actionWebhook()
                     ])
                     ->send();
             } catch (\yii\httpclient\Exception $e) {
+                // Returning success result to Tilda webhook
                 \Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
                 return "ok";
             }
         } else {
+            // Else if this is cURL recursive request, perform
+            // page caching 
             \Yii::$app->tilda->getPage($get['page']);
         }
 
