@@ -115,6 +115,50 @@ You can now render page html code like this
 <?= $page['html'] ?>
 ```
 
+WebHook
+=======
+Tilda has an option to notify your app about any pages published in your projects via a webhook. However, it has some restrictions on it's usage (see more in [Tilda API docs](http://help-ru.tilda.ws/api)). One of the ways to implement Webhook would be like this:
+```php
+public function actionWebhook()
+    {
+        $get = \Yii::$app->request->get();
+        \Yii::debug("GET:".print_r($get,1));
+
+        if (!\Yii::$app->tilda->verifyPublicKey($get['publickey']))
+            throw new \yii\web\ForbiddenHttpException("PublicKey dosen't match");
+
+        if (!isset($get['save'])) {
+            $client = new Client([
+                'transport' => 'yii\httpclient\CurlTransport',
+                'baseUrl' => "http://tyii.ru.xsph.ru/index.php?r=tilda/webhook&save=1"
+            ]);
+            try {
+                $save = $client->createRequest()
+                    ->setMethod('get')
+                    ->setData(['page' => $get['pageid'], 'publickey' => $get['publickey']])
+                    ->setOptions([
+                        CURLOPT_CONNECTTIMEOUT => 1, // connection timeout
+                        CURLOPT_TIMEOUT => 1, // data receiving timeout
+                        CURLOPT_RETURNTRANSFER => false,
+                        CURLOPT_FORBID_REUSE => true,
+                        CURLOPT_DNS_CACHE_TIMEOUT => 10,
+                        CURLOPT_FRESH_CONNECT => true,
+                    ])
+                    ->send();
+            } catch (\yii\httpclient\Exception $e) {
+                \Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+                return "ok";
+            }
+        } else {
+            \Yii::$app->tilda->getPage($get['page']);
+        }
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_HTML;
+        return "ok";
+    }
+```
+This is just an example, you would probably want to add some download errors processing for production purposes.
+
 Notes
 =====
 You should cousider that current Tilda core css settings conflict with Bootstrap (provided with Yii2 by default). To avoid conflicts, you could either don't use `bootstrap.css` and Tilda at the same page, or fix `box-sizing` property of elements in your own stylesheet.
