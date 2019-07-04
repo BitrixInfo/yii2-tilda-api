@@ -63,7 +63,7 @@ Yii::$app->tilda->getPage($pageID)
 ```
 The common use with Gii-generated CRUD could be like the following:
 
-Update the `actionUpdate` function of your Controller (assuming that `tilda_page_id` is your model field containing integer page ID form Tilda. Change it to your actual model field or constant value.) like this
+Update `actionCreate` and `actionUpdate` functions of your Controller like this (assuming that `tilda_page_id` is your model field containing integer page ID form Tilda. Change it to your actual model field or constant value):
 ```php
 if ($model->load(Yii::$app->request->post()) && $model->save()) {
     //insert this line
@@ -84,7 +84,7 @@ listPages
 ---------
 Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
 ```php
-Yii::$app->tilda->getPages($projectID)
+Yii::$app->tilda->listPages($projectID)
 ```
 
 loadPage
