@@ -85,7 +85,7 @@ This will save page body HTML code and assets to your local server.
 Rendering pages
 ---------------
 
-After your page was saved to the local storage, you can render it with the `loadPage` method of the extension. This will require several steps implement:
+After your page was saved to the local storage, you can render it with the `loadPage` method of the extension. This will require several steps to implement:
 
 In your action load page data and pass it to your view:
 ```php
