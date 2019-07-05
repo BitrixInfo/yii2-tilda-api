@@ -80,31 +80,17 @@ if ($model->load(Yii::$app->request->post()) && $model->save()) {
 Вывод страниц
 -------------
 
-После того, как ваша страница была сохранена на локальном сервере, вы можете показать ее пользователю с помощью метода `loadPage`. Для этого потребуется выполнить несколько шагов:
+После того, как ваша страница была сохранена на локальном сервере, вы можете показать ее пользователю с помощью метода `loadPage`. Для этого потребуется выполнить два шага:
 
-В нужном методе экшена в вашем контроллере загрузите данные страницы, и передайте их в представление
+В экшене вашего контроллера зарегистрируйте ресурсы страницы:
 ```php
-$page = Yii::$app->tilda->loadPage(/*ID страницы в Tilda*/);
-...
-return $this->render(/*ваше_представление*/, [
-    ...
-    'page' => $page
-]);
+Yii::$app->tilda->registerAssets($this,$model->tilda_page_id);
 ```
+Первый параметр - текущий инстанс `\yii\web\Controller`, второй - ID страницы Tilda
 
-После этого зарегистрируте ресурсы страницы в вашем представлении:
+Теперь в представлении вы можете вывести HTML-код страницы:
 ```php
-foreach ($page['styles'] as $style) {
-    $this->registerCssFile($style);
-}
-foreach ($page['scripts'] as $script) {
-    $this->registerJsFile($script,['depends' => [yii\web\JqueryAsset::className()]]);
-}
-```
-
-Теперь вы можете вывести HTML-код страницы:
-```php
-<?= $page['html'] ?>
+<?= Yii::$app->tilda->renderHtml($model->tilda_page_id) ?>
 ```
 
 Webhook
@@ -162,11 +148,32 @@ public function actionWebhook()
 =====
 После установки расширения, вы можете использовать его методы в любом месте вашего приложения.
 
+renderPageSelect
+----------------
+Возвращает совместимый с ActiveForm HTML-селект со списком всех страниц в заданом проекте. Если `$projectID` не задан, используется параметр `defaultProjectID`.
+```php
+Yii::$app->tilda->renderPageSelect($model,'your_field_id',$projectID);
+```
+
 getPage
 -------
 Сохраняет страницу и ее ресурсы на локальном сервере. Примечение: не сохраняет на локаольный сервер библотеку jQuery из Tilda (1.10.2), для того чтобы избежать конфликтов с версией включенной в Yii2.
 ```php
 Yii::$app->tilda->getPage($pageID)
+```
+
+registerAssets
+--------------
+Регистрирует ресурсы страницы в представлении (CSS and JS). Первый параметр - текущий инстанс `\yii\web\Controller`, второй - ID страницы Tilda.
+```php
+Yii::$app->tilda->registerAssets($this,$pageID);
+```
+
+renderHtml
+----------
+Возвращает HTML-код страницы
+```php
+Yii::$app->tilda->renderHtml($pageID)
 ```
 
 listPages

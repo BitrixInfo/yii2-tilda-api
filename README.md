@@ -79,31 +79,19 @@ This will save page body HTML code and assets to your local server.
 Rendering pages
 ---------------
 
-After your page was saved to the local storage, you can render it with the `loadPage` method of the extension. This will require several steps to implement:
+After your page was saved to the local storage, you can render it with the `loadPage` method of the extension. This will require two steps to implement:
 
-In your action load page data and pass it to your view:
+In your controller action register the required assets:
 ```php
-$page = Yii::$app->tilda->loadPage(/*YOUR PAGE ID*/);
-...
-return $this->render(/*YOUR VIEW*/, [
-    ...
-    'page' => $page
-]);
+Yii::$app->tilda->registerAssets($this,$model->tilda_page_id);
 ```
-Then in your view register Tilda page assets like this:
+The first parameter is the current `\yii\web\Controller` instance, and the second one is the Tilda page ID.
+
+Then in your view you can render HTML like this
 ```php
-foreach ($page['styles'] as $style) {
-    $this->registerCssFile($style);
-}
-foreach ($page['scripts'] as $script) {
-    $this->registerJsFile($script,['depends' => [yii\web\JqueryAsset::className()]]);
-}
+<?= Yii::$app->tilda->renderHtml($model->tilda_page_id) ?>
 ```
 
-You can now render page html code like this
-```php
-<?= $page['html'] ?>
-```
 
 Webhook
 =======
@@ -161,11 +149,32 @@ Methods
 =====
 After registering the component and applying required migrations, you can access it's methods anywhere in your code. However, the most common usage case was already described above.
 
+renderPageSelect
+----------------
+Returns ActiveForm-compatible HTML select input, which lists all pages from selected project. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
+```php
+Yii::$app->tilda->renderPageSelect($model,'your_field_id',$projectID);
+```
+
 getPage
 -------
 Saves tilda page and it's assets to the local database. Note: Tilda's default jQuery (1.10.2) is not downloaded (to prevent conflicts with your Yii2 jQuery asset). 
 ```php
 Yii::$app->tilda->getPage($pageID)
+```
+
+registerAssets
+--------------
+Registers page's assets (CSS and JS). The first parameter is the current `\yii\web\Controller` instance, and the second one is the Tilda page ID.
+```php
+Yii::$app->tilda->registerAssets($this,$pageID);
+```
+
+renderHtml
+----------
+Returns HTML code of the selected page.
+```php
+Yii::$app->tilda->renderHtml($pageID)
 ```
 
 listPages
