@@ -153,4 +153,28 @@ class TildaApi extends Component
     public function verifyPublicKey($publicKey) {
         return ($this->publicKey == $publicKey) ? true : false;
     }
+
+    /**
+     * Renders ActiveForm-compatiable select widget
+     * @param $model
+     * @param $field
+     * @param int $projectID
+     * @return mixed
+     */
+    public function renderPageSelect($model,$field,$projectID = 0) {
+        if (!$projectID) {
+            if (!$this->defaultProjectID)
+                throw new InvalidConfigException("projectID can't be empty.");
+
+            $projectID = $this->defaultProjectID;
+        }
+        $config = [
+            'model' => $model,
+            'field' => $field,
+            'project' => $projectID,
+        ];
+        $result = TildaPageSelect::widget($config);
+
+        return $result;
+    }
 }
