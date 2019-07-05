@@ -52,7 +52,7 @@ php yii migrate --migrationPath=@vendor/daccess1/yii2-tilda-api/migrations
 
 Usage
 =====
-The two most common goals of this extension are to save Tilda pages to lhe local database and then showing them to the end user. The following instruction shows some common usage patterns for this extension.
+The two most common goals of this extension are saving Tilda pages to lhe local database and then showing them to the end user. The following instruction shows some common usage patterns for this extension. All examples assume that you are using Gii-generated CRUD. 
 
 Saving pages
 ------------
@@ -71,38 +71,21 @@ to the "use" section of your form template, and then replace your form field tha
 ```
 This widget takes all the same values as default ActiveForm input field. You can also set the project ID for listing. If you don't, the `defaultProjectID` setting will be used. As the result, the HTML select with listed Tilda pages will be rendered into your form, and it's input will be treated as any other model field.
 
-Methods
-=====
-After registering the component and applying required migrations, use it anywhere in your code like this:
-
-getPage
--------
-Saves tilda page to the local database
-```php
-Yii::$app->tilda->getPage($pageID)
-```
-The common use with Gii-generated CRUD could be like the following:
-
-Update `actionCreate` and `actionUpdate` functions of your Controller like this (assuming that `tilda_page_id` is your model field containing integer page ID form Tilda. Change it to your actual model field or constant value):
+After selecting the page, you now want to save it to the local storage. In order to do so yo you should update `actionCreate` and `actionUpdate` functions of your Controller like this:
 ```php
 if ($model->load(Yii::$app->request->post()) && $model->save()) {
     //insert this line
-    Yii::$app->tilda->getPage($model->tilda_page_id);
+    Yii::$app->tilda->getPage($model->your_field_id);
     
     return $this->redirect(['view', 'id' => $model->id]);
 }
 ```
+This will save page body HTML code and assets to your local server.
 
-listPages
----------
-Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
-```php
-Yii::$app->tilda->listPages($projectID)
-```
+Rendering pages
+---------------
 
-loadPage
----
-Returns the array of data form the local copy of the page. The common use would be like this:
+After your page was saved to the local storage, you can render it with the `loadPage` method of the extension. This will require several steps implement:
 
 In your action load page data, then pass it to your view
 ```php
@@ -180,6 +163,32 @@ public function actionWebhook()
     }
 ```
 This is just an example, you would probably want to add some download errors processing for production purposes.
+
+Methods
+=====
+After registering the component and applying required migrations, you can access it's methods anywhere in your code. However, the most common usage case was already described above.
+
+getPage
+-------
+Saves tilda page to the local database
+```php
+Yii::$app->tilda->getPage($pageID)
+```
+
+listPages
+---------
+Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
+```php
+Yii::$app->tilda->listPages($projectID)
+```
+
+loadPage
+---
+Returns the array of data form the local copy of the page.
+```php
+$page = Yii::$app->tilda->loadPage($pageID);
+```
+
 
 Notes
 =====
