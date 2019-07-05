@@ -1,5 +1,8 @@
 Yii2 Tilda Api
 ==============
+
+Read in other languages: [Русский](https://github.com/daccess1/yii2-tilda-api/blob/master/README.ru.md)
+
 Tilda platform api extension for Yii2
 
 This is a fork of [nariman924/yii2-tilda-api](https://github.com/nariman924/yii2-tilda-api) project, which seems to be abandoned for a couple of years.
