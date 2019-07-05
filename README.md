@@ -50,48 +50,44 @@ Apply required migrations
 php yii migrate --migrationPath=@vendor/daccess1/yii2-tilda-api/migrations
 ```
 
-
 Usage
 =====
-After registering the component and applying required migrations, use it anywhere in your code like this:
+The two most common goals of this extension are saving Tilda pages to lhe local database and then showing them to the end user. The following instruction shows some common usage patterns for this extension. All examples assume that you are using Gii-generated CRUD. 
 
-getPage
--------
-Saves tilda page to the local database
+Saving pages
+------------
+To render the list of the pages from Tilda project, you can use the `TildaPageSelect` widget. It's designed to be used with the ActiveForm generated with Gii, and requires no additional setup by default. Simply add
 ```php
-Yii::$app->tilda->getPage($pageID)
+use daccess1\tilda\TildaPageSelect;
 ```
-The common use with Gii-generated CRUD could be like the following:
+to the "use" section of your form template, and then replace your form field that stores Tilda page id with this code:
+```php
+<?= TildaPageSelect::widget([
+    'model' => $model,
+    'field' => 'your_field_id'
+    //Optional project ID
+    //'project' => *******
+]) ?>
+```
+This widget takes all the same values as default ActiveForm input field. You can also set the project ID for listing. If you don't, the `defaultProjectID` setting will be used. As the result, the HTML select with listed Tilda pages will be rendered into your form, and it's input will be treated as any other model field.
 
-Update `actionCreate` and `actionUpdate` functions of your Controller like this (assuming that `tilda_page_id` is your model field containing integer page ID form Tilda. Change it to your actual model field or constant value):
+After selecting the page, you now want to save it to the local storage. In order to do so you should update `actionCreate` and `actionUpdate` functions of your Controller like this:
 ```php
 if ($model->load(Yii::$app->request->post()) && $model->save()) {
     //insert this line
-    Yii::$app->tilda->getPage($model->tilda_page_id);
+    Yii::$app->tilda->getPage($model->your_field_id);
     
     return $this->redirect(['view', 'id' => $model->id]);
 }
 ```
+This will save page body HTML code and assets to your local server.
 
-getPages
---------
-Saves all pages from selected project to the local database. If no `$projectID`  is provided the `defaultProjectID` setting is used instead.
-```php
-Yii::$app->tilda->getPages($projectID)
-```
+Rendering pages
+---------------
 
-listPages
----------
-Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
-```php
-Yii::$app->tilda->listPages($projectID)
-```
+After your page was saved to the local storage, you can render it with the `loadPage` method of the extension. This will require several steps implement:
 
-loadPage
----
-Returns the array of data form the local copy of the page. The common use would be like this:
-
-In your action load page data, then pass it to your view
+In your action load page data and pass it to your view:
 ```php
 $page = Yii::$app->tilda->loadPage(/*YOUR PAGE ID*/);
 ...
@@ -100,7 +96,7 @@ return $this->render(/*YOUR VIEW*/, [
     'page' => $page
 ]);
 ```
-Then in your view register page assets like this
+Then in your view register Tilda page assets like this:
 ```php
 foreach ($page['styles'] as $style) {
     $this->registerCssFile($style);
@@ -115,7 +111,7 @@ You can now render page html code like this
 <?= $page['html'] ?>
 ```
 
-WebHook
+Webhook
 =======
 Tilda has an option to notify your app about any pages published in your projects via a webhook. However, it has some restrictions on it's usage (see more in [Tilda API docs](http://help-ru.tilda.ws/api)). One of the ways to implement Webhook would be like this:
 ```php
@@ -130,10 +126,10 @@ public function actionWebhook()
         if (!isset($get['save'])) {
             // If this is actual Tilda webhook request,
             // create cURL request client 
-            // Set 'baseUrl' to your current action Url
+            // Set 'baseUrl' to your current webhook Url
             $client = new Client([
                 'transport' => 'yii\httpclient\CurlTransport',
-                'baseUrl' => 'http://YOUR_DOMAIN/index.php?r=tilda/webhook'
+                'baseUrl' => 'http://domain.com/index.php?r=tilda/webhook'
             ]);
             try {
                 $client->createRequest()
@@ -158,7 +154,7 @@ public function actionWebhook()
             }
         } else {
             // Else if this is cURL recursive request, perform
-            // page caching 
+            // page download 
             \Yii::$app->tilda->getPage($get['page']);
         }
 
@@ -166,11 +162,36 @@ public function actionWebhook()
         return "ok";
     }
 ```
-This is just an example, you would probably want to add some download errors processing for production purposes.
+
+Methods
+=====
+After registering the component and applying required migrations, you can access it's methods anywhere in your code. However, the most common usage case was already described above.
+
+getPage
+-------
+Saves tilda page and it's assets to the local database. Note: Tilda's default jQuery (1.10.2) is not downloaded (to prevent conflicts with your Yii2 jQuery asset). 
+```php
+Yii::$app->tilda->getPage($pageID)
+```
+
+listPages
+---------
+Returns list of pages in project as array of `['id' => 'title']` arrays. If no `$projectID` is provided the `defaultProjectID` setting is used instead.
+```php
+Yii::$app->tilda->listPages($projectID)
+```
+
+loadPage
+---
+Returns the array of data form the local copy of the page.
+```php
+$page = Yii::$app->tilda->loadPage($pageID);
+```
+
 
 Notes
 =====
-You should cousider that current Tilda core css settings conflict with Bootstrap (provided with Yii2 by default). To avoid conflicts, you could either don't use `bootstrap.css` and Tilda at the same page, or fix `box-sizing` property of elements in your own stylesheet.
+You should consider that current Tilda core css settings conflict with Bootstrap (provided with Yii2 by default). To avoid conflicts, you could either don't use `bootstrap.css` and Tilda at the same page, or fix `box-sizing` property of elements in your own stylesheet.
 
 License
 =======
