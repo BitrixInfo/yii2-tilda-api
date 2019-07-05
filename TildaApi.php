@@ -177,4 +177,20 @@ class TildaApi extends Component
 
         return $result;
     }
+
+    /**
+     * @param Controller $controller
+     * @param integer $pageID
+     * @return string
+     */
+    public function registerAssets($controller,$pageID) {
+        $page = TildaRender::loadAssets($pageID);
+        return $controller->renderPartial('@vendor/daccess1/yii2-tilda-api/views/register-assets',[
+            'page' => $page
+        ]);
+    }
+
+    public function renderHtml($pageID) {
+        return TildaRender::loadHtml($pageID);
+    }
 }
