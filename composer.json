@@ -1,7 +1,7 @@
 {
     "name": "daccess1/yii2-tilda-api",
     "description": "Tilda platform api extension for Yii2",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","tilda","api","platform"],
     "license": "MIT",
