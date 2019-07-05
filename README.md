@@ -59,20 +59,11 @@ The two most common goals of this extension are saving Tilda pages to lhe local 
 
 Saving pages
 ------------
-To render the list of the pages from Tilda project, you can use the `TildaPageSelect` widget. It's designed to be used with the ActiveForm generated with Gii, and requires no additional setup by default. Simply add
+To render the list of the pages from Tilda project, you can use the `TildaPageSelect` widget. It's designed to be used with the ActiveForm generated with Gii, and requires no additional setup by default. Simply replace your form field that stores Tilda page id with this code:
 ```php
-use daccess1\tilda\TildaPageSelect;
+<?= Yii::$app->tilda->renderPageSelect($model,'your_field_id'); ?>
 ```
-to the "use" section of your form template, and then replace your form field that stores Tilda page id with this code:
-```php
-<?= TildaPageSelect::widget([
-    'model' => $model,
-    'field' => 'your_field_id'
-    //Optional project ID
-    //'project' => *******
-]) ?>
-```
-This widget takes all the same values as default ActiveForm input field. You can also set the project ID for listing. If you don't, the `defaultProjectID` setting will be used. As the result, the HTML select with listed Tilda pages will be rendered into your form, and it's input will be treated as any other model field.
+This widget takes all the same values as default ActiveForm input field. You can also set the project ID (integer) as a third parameter. If you don't, the `defaultProjectID` setting will be used. As the result, the HTML select with listed Tilda pages will be rendered into your form, and it's input will be treated as any other model field.
 
 After selecting the page, you now want to save it to the local storage. In order to do so you should update `actionCreate` and `actionUpdate` functions of your Controller like this:
 ```php
