@@ -59,7 +59,7 @@ The two most common goals of this extension are saving Tilda pages to lhe local 
 
 Saving pages
 ------------
-To render the list of the pages from Tilda project, you can use the `TildaPageSelect` widget. It's designed to be used with the ActiveForm generated with Gii, and requires no additional setup by default. Simply replace your form field that stores Tilda page id with this code:
+To render the list of the pages from Tilda project, you can use the `renderPageSelect` method. It's designed to be used with the ActiveForm generated with Gii, and requires no additional setup by default. Simply replace your form field that stores Tilda page id with this code:
 ```php
 <?= Yii::$app->tilda->renderPageSelect($model,'your_field_id'); ?>
 ```
@@ -79,7 +79,7 @@ This will save page body HTML code and assets to your local server.
 Rendering pages
 ---------------
 
-After your page was saved to the local storage, you can render it with the `loadPage` method of the extension. This will require two steps to implement:
+After your page was saved to the local storage, you can render it with the `registerAssets` and `renderHtml` methods of the extension. This will require two steps to implement:
 
 In your controller action register the required assets:
 ```php
